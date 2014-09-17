@@ -1,0 +1,6 @@
+[flickr]
+key = Your flickr api key
+secret = Your flickr api secret
+is-public = 1 for public, 0 for private
+is-family = 1 for accessible to family, 0 for private
+is-friend = 1 for accessible to friends, 0 for private
