@@ -20,6 +20,9 @@ flickrObj = None
 flickr_key = ''
 flickr_secret = ''
 flickr_access_token = ''
+is_public = 0
+is_family = 0
+is_friend = 0
 tries = 0
 allowedfiles = ['.jpg', '.jpeg', '.png', '.gif', '.avi', '.mp4', '.3gp']
 
@@ -36,7 +39,7 @@ def doGreeting():
 	greetingStr += '\nFlickr Folder Uploader'
 	greetingStr += '\n'
 	greetingStr += '\nA simple Python script to upload a directory of photos to Flickr.'
-	greetingStr += '\nFor full details see http://freelancewebdev.github.com/PyFlickrUploader'
+	greetingStr += '\nFor full details see http://freelancewebdev.github.com/FlickrPyUploader'
 	greetingStr += '\n'  
 	greetingStr += '\nCopyright (C) ' + str(datetime.now().year) + ' Joe Molloy (info[at]hyper-typer.com)'
 	greetingStr += '\nThis program comes with ABSOLUTELY NO WARRANTY.'
@@ -97,6 +100,24 @@ def getConfigs():
 	try: 
 		flickr_access_token = cfg.get('flickr','access_token')
 	except:
+		pass
+	try:
+		is_public = cfg.get('flickr','is-public')
+	except:
+		print 'Setting uploads to private'
+		logging.debug('No configuration setting for is-public found so setting uploads to private')
+		pass
+	try:
+		is_family = cfg.get('flickr','is-family')
+	except:
+		print 'Setting uploads to private from family'
+		logging.debug('No configuration setting for is-family found so setting uploads to private')
+		pass
+	try:
+		is_friend = cfg.get('flickr','is-friend')
+	except:
+		print 'Setting uploads to private'
+		logging.debug('No configuration setting for is-friend found so setting uploads to private')
 		pass
 	print 'Configuration values set up'
 
