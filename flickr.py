@@ -24,7 +24,7 @@ is_public = 0
 is_family = 0
 is_friend = 0
 tries = 0
-allowedfiles = ['.jpg', '.jpeg', '.png', '.gif', '.avi', '.mp4', '.3gp']
+allowedfiles = ['jpg', 'jpeg', 'png', 'gif', 'avi', 'mp4', '3gp', 'tif', 'bmp']
 
 def main():
 	doGreeting()
@@ -154,7 +154,8 @@ def uploadPhotos():
 	tries = 0
 	for root, dirs, files in os.walk(pics_folder):
 		for f in files:
-			if not f.endswith('.ini') and not f == '.DS_Store' and not f == '._.DS_Store' and not f.endswith('.db') and not f.endswith('.zip') and not f.endswith('.3gp'):
+			ext = os.path.splitext(f)[1].lower()
+			if ext in allowedfiles:
 				uploadPhoto(f,root)
 	print 'Uploaded %d photos' % fileCount
 
