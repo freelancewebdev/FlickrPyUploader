@@ -13,7 +13,7 @@ cfg = None
 localpath = ''
 configFilename = ''
 logfilename = ''
-picsfolder = '/Users/joe/Dropbox/python/dropboxpics/camera'
+pics_folder = ''
 fileCount = 0
 fileSize = 0
 flickrObj = None
@@ -56,16 +56,10 @@ def doLocalSetup():
 	logFileName = __file__ + '.log'
 	logging.basicConfig(filename=logFileName,level=logging.DEBUG)
 	logging.info('Logging set up')
-	if not os.path.isdir(picsfolder):
-		print 'Photos folder not found. Exiting.'
-		logging.critical('Photo folder not found')
-		sys.exit(1)
-	else:
-		print 'Uplaoding photos from %s.' %picsfolder
 	print 'Basic setup complete'
 
 def getConfigs():
-	global cfg, flickr_key, flickr_secret, flickr_access_token
+	global cfg, flickr_key, flickr_secret, pics_folder, flickr_access_token, is_public, is_family, is_friend
 	print '\nChecking configuration data...'
 	logging.info('Checking config data')
 	cfg = ConfigParser.ConfigParser()
@@ -101,6 +95,18 @@ def getConfigs():
 		flickr_access_token = cfg.get('flickr','access_token')
 	except:
 		pass
+	try:
+		pics_folder = cfg.get('flickr','pics-folder')
+	except:
+		print 'No folder specified to upload from. Exiting.'
+		logging.critical('No folder specified to upload photos/videos from.')
+		sys.exit(1)
+	if not os.path.isdir(pics_folder):
+		print 'Photos folder not found. Exiting.'
+		logging.critical('Photo folder not found')
+		sys.exit(1)
+	else:
+		print 'Uplaoding photos from %s.' %picsfolder
 	try:
 		is_public = cfg.get('flickr','is-public')
 	except:
@@ -146,7 +152,7 @@ def checkAuth():
 def uploadPhotos():
 	global fileCount, tries
 	tries = 0
-	for root, dirs, files in os.walk(picsfolder):
+	for root, dirs, files in os.walk(pics_folder):
 		for f in files:
 			if not f.endswith('.ini') and not f == '.DS_Store' and not f == '._.DS_Store' and not f.endswith('.db') and not f.endswith('.zip') and not f.endswith('.3gp'):
 				uploadPhoto(f,root)
